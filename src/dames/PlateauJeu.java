@@ -5,14 +5,18 @@
  */
 package dames;
 
-
 /**
  *
  * @author IAZERTYUIOPI
  */
-public class PlateauJeu {
+public class PlateauJeu implements Runnable {
     
     private int[] tableau;
+    
+    public void run()
+    {
+        this.Go();
+    }
     
     public PlateauJeu(int taille, boolean isRandom)
     {
@@ -75,18 +79,18 @@ public class PlateauJeu {
 
     public void Go() {
         
-        System.out.print(toString());
+        //System.out.print(toString());
         int compteur = 0;
         
         while (evaluatePosition(tableau)!=0)
         {
             choisirLaMeilleurePermutation();
             compteur++;
-            System.out.println(toString());
+            //System.out.println(toString());
         }
 
-        System.out.println(toString());
-        System.out.println("Nombre de permutations :" + compteur);
+        //System.out.println(toString());
+        //System.out.println("Nombre de permutations :" + compteur);
     }
     
     public void choisirLaMeilleurePermutation() {
