@@ -17,7 +17,7 @@ public class Dames {
     public static void main(String[] args) {
            
         // TODO code application logic here
-        PlateauJeu p = new PlateauJeu(42, true);
+        PlateauJeu p = new PlateauJeu(53, true);
         p.Go();
     }
     
