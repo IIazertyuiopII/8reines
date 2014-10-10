@@ -13,14 +13,15 @@ public class Dames {
     
     /**
      * @param args the command line arguments
+     * @throws java.lang.InterruptedException
      */
     public static void main(String[] args) throws InterruptedException {
            
-        ArrayList<Integer> successful = new ArrayList<Integer>(3);
+        ArrayList<Integer> successful = new ArrayList<>(3);
         
         //Thread t = new Thread(new PlateauJeu(8, true));
         //t.start();
-        for(int i = 80 ; i < 160 ; i+=4)
+        for(int i = 50 ; i < 54 ; i+=4)
         {
             Thread[] threadtab = new Thread[4];
             
