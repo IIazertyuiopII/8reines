@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 package dames;
-import java.util.ArrayList;
+import java.util.concurrent.*;
 /**
  *
  * @author IAZERTYUIOPI
@@ -13,41 +13,35 @@ public class Dames {
     
     /**
      * @param args the command line arguments
-     * @throws java.lang.InterruptedException
      */
-    public static void main(String[] args) throws InterruptedException {
+    public static void main(String[] args){
            
-        ArrayList<Integer> successful = new ArrayList<>(3);
+        //PlateauJeu p = new PlateauJeu(42, true);
+        //p.Go();
         
-        //Thread t = new Thread(new PlateauJeu(8, true));
-        //t.start();
-        for(int i = 50 ; i < 54 ; i+=4)
-        {
-            Thread[] threadtab = new Thread[4];
+        //Init exception handler used by the threads
+        Thread.UncaughtExceptionHandler eHandler = new Thread.UncaughtExceptionHandler() {
+            public void uncaughtException(Thread th, Throwable ex) {
+            th.interrupt();
+        }
+        };
+        
+        //init threadPool
+        ExecutorService threadPool = Executors.newFixedThreadPool(4);
+
+
+        for(int i = 300; i < 400; i++){
             
-            for(int j=0; j<4; j++){
-                
-            threadtab[j] = new Thread(new PlateauJeu(i+j, true));
-            threadtab[j].start();
-            
-            }
-            
-            Thread.sleep(10000);
-            
-            for (int j=0; j<4; j++) {
-                if(threadtab[j].isAlive()){
-                    threadtab[j].interrupt();
-                } 
-                else{
-                    successful.add(i+j);
-                }
-            }
-            
-            
+            Thread currentThread = new Thread(new PlateauJeu(i, true));
+            currentThread.setUncaughtExceptionHandler(eHandler);
+            threadPool.submit(currentThread);
+        }
+
+        threadPool.shutdown();
+         
         }
         
-        System.out.println(successful.toString());
         
     }
     
-}
+

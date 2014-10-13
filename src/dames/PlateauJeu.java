@@ -12,10 +12,14 @@ package dames;
 public class PlateauJeu implements Runnable {
     
     private int[] tableau;
+    private int npermutations;
     
-    public void run()
+    /**
+     *
+     */
+    public void run() 
     {
-        this.Go();
+       this.Go();
     }
     
     public PlateauJeu(int taille, boolean isRandom)
@@ -30,6 +34,10 @@ public class PlateauJeu implements Runnable {
     
     public int[] getTableau(){
       return tableau;  
+    }
+    
+    public int getNpermutations() {
+        return npermutations;
     }
     
     public void permuter(int[] t,int i, int j)
@@ -58,7 +66,7 @@ public class PlateauJeu implements Runnable {
             output+="\n";
         }
         output+="\n";
-        output+="Position score : "+evaluatePosition(tableau)+"\n";
+        //output+="Position score : "+evaluatePosition(tableau)+", N = "+tableau.length+"";
         return output;
     }
     
@@ -80,39 +88,31 @@ public class PlateauJeu implements Runnable {
     public void Go() {
         
         //System.out.print(toString());
-        int compteur = 0;
         
         while (evaluatePosition(tableau)!=0)
         {
-            choisirLaMeilleurePermutation();
-            compteur++;
+            if(!choisirLaMeilleurePermutation()){throw new RuntimeException();};
             //System.out.println(toString());
         }
 
-        //System.out.println(toString());
-        //System.out.println("Nombre de permutations :" + compteur);
+        System.out.println(toString());
+        System.out.println("N : " + tableau.length);
+        throw new RuntimeException();
     }
     
-    public void choisirLaMeilleurePermutation() {
-
-    int indiceLigneMeilleurePermutation = 0;
-    int indiceColonneMeilleurePermutation = 0;  
-    int scoreMeilleurePermutation = -100000;
-    int scorePermutationCourante;
+    public boolean choisirLaMeilleurePermutation() {
+  
+    int scoreActuel = evaluatePosition(tableau);
         
     for(int i = 0; i<tableau.length;i++){
         for(int j = 0; j<tableau.length;j++){
-            scorePermutationCourante = evaluatePositionIfPermutait(i, j);
-            if(i!=j && scorePermutationCourante > scoreMeilleurePermutation) {
-                indiceLigneMeilleurePermutation = i;
-                indiceColonneMeilleurePermutation = j;
-                scoreMeilleurePermutation = scorePermutationCourante;
-            }
-            
+            if(i!=j && evaluatePositionIfPermutait(i, j) > scoreActuel) {
+                permuter(tableau,i,j);
+                npermutations++;
+                return true;
+            }  
         }   
     }
-      
-        permuter(tableau,indiceLigneMeilleurePermutation,indiceColonneMeilleurePermutation);
-    
+    return false;
     }
 }
