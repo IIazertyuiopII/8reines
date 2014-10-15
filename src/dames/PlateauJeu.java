@@ -13,7 +13,7 @@ public class PlateauJeu implements Runnable {
     
     private int[] tableau;
     private int npermutations;
-    
+    private boolean displayPlateau;
     /**
      *
      */
@@ -22,10 +22,11 @@ public class PlateauJeu implements Runnable {
        this.Go();
     }
     
-    public PlateauJeu(int taille, boolean isRandom)
+    public PlateauJeu(int taille, boolean isPlateauVisible)
     {
+        displayPlateau = isPlateauVisible;
         tableau = new int[taille];
-
+        npermutations = 0;
         for (int i = 0;i<taille;i++){
               tableau[i] = i;
         }
@@ -65,8 +66,8 @@ public class PlateauJeu implements Runnable {
             } 
             output+="\n";
         }
-        output+="\n";
-        //output+="Position score : "+evaluatePosition(tableau)+", N = "+tableau.length+"";
+        output+="Nombre de permutations : " + npermutations + "\n";
+        
         return output;
     }
     
@@ -86,17 +87,16 @@ public class PlateauJeu implements Runnable {
     }
 
     public void Go() {
-        
-        //System.out.print(toString());
-        
+                
         while (evaluatePosition(tableau)!=0)
         {
-            if(!choisirLaMeilleurePermutation()){throw new RuntimeException();};
-            //System.out.println(toString());
+            if(!choisirLaMeilleurePermutation()){
+                System.out.println("N : "+tableau.length+" FAILURE");
+                throw new RuntimeException();}
         }
 
-        System.out.println(toString());
-        System.out.println("N : " + tableau.length);
+        System.out.println("N : " + tableau.length+" SUCCESS");
+        if(displayPlateau){System.out.println(toString());}
         throw new RuntimeException();
     }
     

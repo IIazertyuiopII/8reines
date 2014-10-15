@@ -5,6 +5,7 @@
  */
 package dames;
 import java.util.concurrent.*;
+import java.util.Scanner;
 /**
  *
  * @author IAZERTYUIOPI
@@ -16,7 +17,15 @@ public class Dames {
      */
     public static void main(String[] args){
            
-        //PlateauJeu p = new PlateauJeu(42, true);
+        Scanner s = new Scanner(System.in);
+        System.out.println("Start index :");
+        int startIndex = s.nextInt();
+        System.out.println("End index :");
+        int endIndex = s.nextInt();
+        System.out.println("Display solutions graphically (0/1)?");
+        boolean displayPlateau = s.nextInt()==1;
+        
+        //PlateauJeu p = new PlateauJeu(420, true);
         //p.Go();
         
         //Init exception handler used by the threads
@@ -30,9 +39,9 @@ public class Dames {
         ExecutorService threadPool = Executors.newFixedThreadPool(4);
 
 
-        for(int i = 300; i < 400; i++){
+        for(int i = startIndex; i < endIndex; i++){
             
-            Thread currentThread = new Thread(new PlateauJeu(i, true));
+            Thread currentThread = new Thread(new PlateauJeu(i, displayPlateau));
             currentThread.setUncaughtExceptionHandler(eHandler);
             threadPool.submit(currentThread);
         }
